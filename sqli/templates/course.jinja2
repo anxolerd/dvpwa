@@ -1,0 +1,65 @@
+{% extends 'base.jinja2' %}
+
+{% block title %}{{ course.name }}{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="col s12">
+        <a href="/" class="breadcrumb">SQLI</a>
+        <a href="/courses/" class="breadcrumb">Courses</a>
+        <a href="/courses/{{ course.id }}" class="breadcrumb">{{ course.title }}</a>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h2>{{ course.title }}</h2>
+    <p>{{ course.description }}</p>
+
+    {% if reviews %}
+        <ul class="collection with-header">
+            <li class="collection-header"><h4>Course reviews</h4></li>
+            {% for review in reviews %}
+                <li class="collection-item">
+                    {{ review.review_text }}
+                    <span class="secondary-content">
+                {{ review.date.date().isoformat() }}
+                {{ review.date.time().strftime('%H:%M') }}
+            </span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large pink waves-effect waves-light"
+           href="/courses/{{ course.id }}/review"
+           title="Review course"
+        >
+            <i class="large material-icons">mode_edit</i>
+        </a>
+    </div>
+{% endblock %}
+{% block aside %}
+    {% if auth_user.is_admin %}
+        <div class="collection with-header">
+            <div class="collection-header"><h4>Evaluate students</h4></div>
+            {% for student in students %}
+                <form class="collection-item valign-wrapper"
+                      method="POST"
+                      action="/students/{{ student.id }}/evaluate/{{ course.id }}">
+
+                    <a href="/students/{{ student.id }}">{{ student.name }}</a>
+                    <div class="input-field inline">
+                        <input id="points" name="points" type="number" min="0" max="5" step="1" class="validate"
+                               required>
+                        <label for="points" data-error="Must be a number between 0 and 5 inclusive">
+                            Points
+                        </label>
+                    </div>
+                    <button class="btn-flat waves-effect waves-pink secondary-content" type="submit">
+                        Evaluate
+                        <i class="material-icons right">send</i>
+                    </button>
+                </form>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

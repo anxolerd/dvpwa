@@ -1,0 +1,54 @@
+{% extends 'base.jinja2' %}
+
+{% block title %}Review course{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="col s12">
+        <a href="/" class="breadcrumb">SQLI</a>
+        <a href="/courses/" class="breadcrumb">Courses</a>
+        <a href="/courses/{{ course.id }}" class="breadcrumb">
+            {{ course.title | e }}
+        </a>
+        <a href="/courses/{{ course.id }}/review" class="breadcrumb">
+            Review
+        </a>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <form class="col s12" method="POST">
+            <div class="card">
+                {% if errors %}
+                    <div class="row">
+                        <div class="toast" style="top: 0;">
+                            {% for fieldname, errors in errors.items %}
+                                <span>{{ fieldname }}: {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="card-content">
+                    <span class="card-title">Write review to {{ course.title }}</span>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="review_text" name="review_text" class="materialize-textarea"></textarea>
+                            <label for="review_text">Write your review...</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <button class="btn pink waves-effect waves-light" type="submit">
+                        Save
+                    </button>
+                    <a class="btn-flat waves-effect waves-pink text-black"
+                       href="/courses/{{ course.id }}"
+                    >
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

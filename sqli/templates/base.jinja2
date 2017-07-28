@@ -1,0 +1,72 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/css/materialize.min.css"/>
+
+    <title>{% block title %}SQLI{% endblock %}</title>
+</head>
+<body>
+
+{% macro logout_form() -%}
+
+{%- endmacro %}
+
+<nav class="light-blue lighten-1">
+    <div class="nav-wrapper container">
+        <span class="brand-logo">{{ self.title() }}</span>
+        {% if auth_user %}
+            <ul class="right hide-on-med-and-down">
+                <li>
+                    <span style="margin-right: 16px">{{ auth_user.first_name }} {{ auth_user.middle_name or '' }} {{ auth_user.last_name }}</span>
+                </li>
+                <li>
+                    <form method="POST" action="/logout/">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                        <div class="valign-wrapper" style="height: 100%">
+                            <button class="btn pink waves-effect waves-light" type="submit">Log out</button>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+
+            <ul id="nav-mobile" class="side-nav black-text" style="transform: translateX(-100%);">
+                <li>
+                    <span class="">{{ auth_user.first_name }} {{ auth_user.middle_name or '' }} {{ auth_user.last_name }}</span>
+                </li>
+                <li>
+                    <form method="POST" action="/logout/">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                        <button class="btn pink waves-effect waves-light" type="submit">Log out</button>
+                    </form>
+                </li>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        {% endif %}
+    </div>
+</nav>
+<nav class="light-blue lighten-1">
+    <div class="nav-wrapper container">
+        {% block breadcrumbs %}{% endblock %}
+    </div>
+</nav>
+
+<div class="row">
+    <div class="col s12 m8">
+        <main>{% block content %}{% endblock %}</main>
+    </div>
+    <div class="col s12 m4">
+        <aside>{% block aside %}{% endblock %}</aside>
+    </div>
+</div>
+
+<script type="text/javascript" defer src="/static/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" defer src="/static/js/materialize.min.js"></script>
+<script type="text/javascript" defer src="/static/js/init.js"></script>
+
+</body>
+</html>

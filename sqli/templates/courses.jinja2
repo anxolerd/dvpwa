@@ -1,0 +1,63 @@
+{% extends 'base.jinja2' %}
+
+{% block title %}Courses{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="col s12">
+        <a href="/" class="breadcrumb">SQLI</a>
+        <a href="/courses/" class="breadcrumb">Courses</a>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="collection">
+        {% for course in courses %}
+            <a href="/courses/{{ course.id }}" class="collection-item">
+                {{ course.title }}
+                <span class="secondary-content">{{ course.description }}</span>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block aside %}
+    {% if auth_user and auth_user.is_admin %}
+        <div class="row">
+            <form class="col s12" method="POST">
+                <div class="card">
+                    {% if errors %}
+                        <div class="row">
+                            <div class="toast" style="top: 0;">
+                                {% for error in errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="card-content">
+                        <span class="card-title">Add new course</span>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="title" name="title" type="text" class="validate">
+                                <label for="title">Title</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea id="description" name="description" class="materialize-textarea"></textarea>
+                                <label for="description">Description</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <button class="btn pink waves-effect waves-light" type="submit">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

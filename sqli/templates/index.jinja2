@@ -1,0 +1,51 @@
+{% extends 'base.jinja2' %}
+
+{% block content %}
+    <h2>It is alive! =)</h2>
+    <p>last visit: {{ last_visited }}</p>
+
+    <a href="/students/">Students</a><br/>
+    <a href="/courses/">Courses</a><br/>
+{% endblock %}
+
+{% block aside %}
+    {% if not auth_user %}
+        <div class="row">
+            <form class="col s12" method="POST">
+                <div class="card">
+                    {% if errors %}
+                        <div class="row">
+                            <div class="toast" style="top: 0;">
+                                {% for error in errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="card-content">
+                        <span class="card-title">Log in</span>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="username" name="username" type="text" class="validate">
+                                <label for="username">Username</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="password" name="password" type="password" class="validate">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <button class="btn pink waves-effect waves-light" type="submit">
+                            Log in
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

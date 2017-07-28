@@ -1,0 +1,15 @@
+db:
+  user: postgres
+  password: postgres
+  host: postgres
+  port: 5432
+  database: sqli
+
+redis:
+  host: redis
+  port: 6379
+  db: 0
+
+app:
+  host: 0.0.0.0
+  port: 8080

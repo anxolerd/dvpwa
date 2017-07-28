@@ -1,0 +1,31 @@
+{% extends 'base.jinja2' %}
+
+{% block title %}Evaluation error{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="col s12">
+        <a href="/" class="breadcrumb">SQLI</a>
+        <a href="/students/" class="breadcrumb">Students</a>
+        <a href="/students/{{ student.id }}" class="breadcrumb">{{ student.name | e }}</a>
+        <a href="#" class="breadcrumb">Evaluate</a>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h2>Fail</h2>
+    {% for fieldname, errors in errors.items() %}
+        <p>{{ fieldname }}: {{ errors }}</p>
+    {% endfor %}
+    <img class="responsive-img" src="//http.cat/400"/>
+{% endblock %}
+
+{% block aside %}
+    <div class="collection">
+        <a class="collection-item" href="/students/{{ student.id }}">
+            Back to student {{ student.name }}
+        </a>
+        <a class="collection-item" href="/courses/{{ course.id }}">
+            Back to course {{ course.name }}
+        </a>
+    </div>
+{% endblock %}
