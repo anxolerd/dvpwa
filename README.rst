@@ -23,7 +23,7 @@ DVPWA is packaged into docker container. All the dependencies described in
 :code:`docker-compose.yml`. You can easiliy run it and its dependencies 
 using a simple command:
 
-.. code-block
+.. code-block :: bash
 
     docker-compose up
 
@@ -43,7 +43,7 @@ Requirements
 Installing and running
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block
+.. code-block :: bash
 
     # Install application dependencies.
     pip install -r requirements.txt
