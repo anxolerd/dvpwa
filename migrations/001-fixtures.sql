@@ -23,4 +23,4 @@ INSERT INTO courses (title, description) VALUES
 
 INSERT INTO marks(student_id, course_id, points) VALUES
   (1, 1, 4), (1, 1, 5), (1, 1, 3), (1, 1, 4),
-  (1, 2, 2), (1, 2, 3), (1, 3, 5), (1, 3, 5)
+  (1, 2, 2), (1, 2, 3), (1, 3, 5), (1, 3, 5);
