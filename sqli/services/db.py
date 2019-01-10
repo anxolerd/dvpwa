@@ -23,4 +23,3 @@ async def _init_pg(app: Application):
 async def _close_pg(app: Application):
     app['db'].close()
     await app['db'].wait_closed()
-
