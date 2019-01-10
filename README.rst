@@ -27,6 +27,8 @@ using a simple command:
 
     docker-compose up
 
+Then visit http://localhost:8080 in your favorite browser.
+
 Natively
 --------
 
@@ -80,6 +82,8 @@ Installing and running
 
     # Run application
     python run.py
+
+Then visit http://localhost:8080 in your favorite browser.
 
 .. _`dvwa`: http://dvwa.co.uk
 .. _`bobby-tables xkcd comics`: https://xkcd.com/327/
