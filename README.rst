@@ -150,8 +150,56 @@ Mitigation
 Never construct database queries using string concatenation. Use
 library-provided way to pass parameters and query separated. Use ORM.
 
+Stored XSS
+----------
+
+Steps to reproduce
+~~~~~~~~~~~~~~~~~~
+
+1. Open http://localhost:8080/courses/1/review.
+2. Fill in review content with the following payload:
+
+   .. code-block:: html
+
+      <b>Is this bold?</b> Yes!
+
+3. Submit the review by clicking "Save" button.
+4. Observe the newly created review. Note that text "Is it bold?" is bold,
+   which means review content is probably neither sanitized on input nor
+   escaped on output.
+5. Open  http://localhost:8080/courses/1/review.
+6. Fill in review content with the following payload:
+
+   .. code-block:: html
+      
+      <script>
+        alert('I am a stored XSS. Your cookies are: ' + document.cookie')
+      </script>
+
+7. Submit the review by clicking "Save" button.
+8. Observe the result.
+
+Result
+~~~~~~
+
+Now whenever you load http://localhost:8080/courses/1, you will receive an
+alert, which displays your cookie. You can play with different ways to inject
+your custom javascript to the page now: event handlers (i.e. ``<img
+src="nonexistent" onerror="alert(document.cookie)">``, links with javascript
+targets, etc.
+
+Mitigation
+~~~~~~~~~~
+
+Escape all untrusted content, when you output it. In this example, to mitigate
+this kind of attack you can set ``autoescape=True`` when setting up templating
+engine (Jinja2) in ``sqli/app.py``.
+You can also sanitize text, when users input it and prohibit different kinds of
+code injection.
+
 TBA
 ---
+
 
 .. _`dvwa`: http://dvwa.co.uk
 .. _`bobby-tables xkcd comics`: https://xkcd.com/327/
