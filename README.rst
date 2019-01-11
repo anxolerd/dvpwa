@@ -10,7 +10,7 @@ The purpose of this project is to implement real-world like application in
 Python with as many vulnerabilities as possible while having a good design and
 intentions.
 
-This project was used as demonstration of vulnerabilities during my 
+This project was used as demonstration of vulnerabilities during my
 `Web vulnerabilities`_ presentation at EVO Summer Python Lab'17.
 
 Running
@@ -20,7 +20,7 @@ Docker-compose
 --------------
 
 DVPWA is packaged into docker container. All the dependencies described in
-:code:`docker-compose.yml`. You can easiliy run it and its dependencies 
+:code:`docker-compose.yml`. You can easiliy run it and its dependencies
 using a simple command:
 
 .. code-block :: bash
@@ -28,6 +28,19 @@ using a simple command:
     docker-compose up
 
 Then visit http://localhost:8080 in your favorite browser.
+
+To rebuild the container, please use ``./recreate.sh`` script, which will
+delete old container and create new from scratch. This script is primarly used
+in order to rebuild application image.
+
+If you have screwed up the database (i.e. with ``DROP TABLE students;``, please
+issue the following commands to recreate database container:
+
+.. code-block :: bash
+
+    docker-compose stop postgres
+    docker-compose rm  # make sure, you remove only images you want to recreate
+    docker-compose up postgres  # recreate container and run
 
 Natively
 --------
@@ -84,6 +97,61 @@ Installing and running
     python run.py
 
 Then visit http://localhost:8080 in your favorite browser.
+
+
+Vulnerabilities
+===============
+
+Session fixation
+----------------
+
+Steps to reproduce
+~~~~~~~~~~~~~~~~~~
+
+1. Open http://localhost:8080.
+2. Open browser devtools.
+3. Get value for ``AIOHTTP_SESSION`` cookie.
+4. Open http://localhost:8080 in the incognito tab.
+5. In the incognito tab, change cookie value to the one, obtained in step 3.
+6. In the normal tab (the one from steps 1-3) log in as any user.
+7. Refresh page in the incognito tab.
+
+Result
+~~~~~~
+
+You are now logged in the incognito tab as user from step 6 as well.
+
+Mitigation
+~~~~~~~~~~
+
+Rotate session identifiers on every single login and logout. Rotate session
+identifiers on every user_id and/or permissions change.
+
+SQL Injection
+-------------
+
+Steps to reproduce
+~~~~~~~~~~~~~~~~~~
+
+1. Open http://localhost:8080.
+2. Log in as ``superadmin:superadmin``.
+3. Go to http://localhost:8080/students/.
+4. Add new student with the name ``Robert'); DROP TABLE students CASCADE; --``.
+
+Result
+~~~~~~
+
+Table "students" is deleted from database. You observe error message, which
+says: _"relation \"students\" does not exist"_.
+
+Mitigation
+~~~~~~~~~~
+
+Never construct database queries using string concatenation. Use
+library-provided way to pass parameters and query separated. Use ORM.
+
+TBA
+---
 
 .. _`dvwa`: http://dvwa.co.uk
 .. _`bobby-tables xkcd comics`: https://xkcd.com/327/
