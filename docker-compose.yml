@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.db
+    ports:
+      - 5432:5432
 
   redis:
     image: redis:alpine
