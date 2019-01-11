@@ -173,7 +173,7 @@ Steps to reproduce
    .. code-block:: html
       
       <script>
-        alert('I am a stored XSS. Your cookies are: ' + document.cookie')
+        alert('I am a stored XSS. Your cookies are: ' + document.cookie);
       </script>
 
 7. Submit the review by clicking "Save" button.
