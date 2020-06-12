@@ -197,8 +197,59 @@ engine (Jinja2) in ``sqli/app.py``.
 You can also sanitize text, when users input it and prohibit different kinds of
 code injection.
 
+Bad choice for storing passwords
+--------------------------------
+
+Description
+~~~~~~~~~~~
+
+As per `check_paswword function
+<https://github.com/anxolerd/dvpwa/blob/master/sqli/dao/user.py#L40-L41>`_ and
+`database initialization script
+<https://github.com/anxolerd/dvpwa/blob/master/sqli/dao/user.py#L40-L41>`_,
+passwords are not stored in the database themselves, but their md5 hashes.
+
+Here are the problems with such approach:
+
+- As hash function produces same output for same input, same passwords will
+  produce the same hash. Passwords are vulnerable to statistical analysis: it
+  is possible to determine how many people use the same password, how popular
+  the password is, etc:
+
+  .. code-block :: sql
+  
+     sqli=# select pwd_hash, array_agg(username), count(*)
+     sqli-# from "users"
+     sqli-# group by pwd_hash 
+     sqli-# order by count(*) desc;
+                  pwd_hash             |   array_agg    | count
+     ----------------------------------+----------------+-------
+      5f4dcc3b5aa765d61d8327deb882cf99 | {j.doe,s.king} |     2
+      1da0bac388e8e0409a83e121e1af6ef4 | {p.parker}     |     1
+      17c4520f6cfd1ab53d8745e84681eb49 | {superadmin}   |     1
+     (3 rows)
+
+
+- Md5 is considered quite a weak hash, thus collisions can be easily found.
+  Moreover, this hash is easy to bruteforce, as well as a lot of rainbow tables
+  exists for md5. For example, `CrackStation website
+  <https://crackstation.net/>`_ can be used for such purposes.
+
+Mitigation
+~~~~~~~~~~
+
+Password themselves should never be stored in database. Special hash functions
+for passwords exist, such as argon2, bcrypt, pbkdf2. These functions should be
+used instead of plain text passwords or weak hashes like md5, or fast hash
+functions like sha1, sha2. For examples, see `password hashing
+<https://pynacl.readthedocs.io/en/stable/password_hashing/>`_ section on PyNaCL
+documentation.
+
+Cross-site request forgery
+--------------------------
+
 TBA
----
+
 
 
 .. _`dvwa`: http://dvwa.co.uk
