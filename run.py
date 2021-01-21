@@ -2,9 +2,10 @@ import sys
 import logging
 
 from aiohttp.web import run_app
-
+# huehue
 from sqli.app import init as init_app
 
+log = logging.getLogger(__name__)
 log = logging.getLogger(__name__)
 
 if __name__ == '__main__':
