@@ -8,7 +8,7 @@ attrs==18.2.0             # via aiohttp
 chardet==3.0.4            # via aiohttp
 hiredis==0.3.1            # via aioredis
 idna==2.8                 # via yarl
-jinja2==2.10              # via aiohttp-jinja2
+jinja2==2.11              # via aiohttp-jinja2
 markupsafe==1.1.0         # via jinja2
 multidict==4.5.2          # via aiohttp, yarl
 psycopg2==2.7.6.1         # via aiopg
