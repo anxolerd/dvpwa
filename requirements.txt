@@ -11,7 +11,8 @@ idna==2.8                 # via yarl
 jinja2==2.10              # via aiohttp-jinja2
 markupsafe==1.1.0         # via jinja2
 multidict==4.5.2          # via aiohttp, yarl
-psycopg2==2.7.6.1         # via aiopg
+#psycopg2==2.7.6.1         # via aiopg
+psycopg>=2.8 # required a newer version, because of https://github.com/psycopg/psycopg2/issues/854
 pyyaml==3.13
 trafaret-config==2.0.2
 trafaret==1.2.0
