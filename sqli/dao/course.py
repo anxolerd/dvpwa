@@ -23,6 +23,8 @@ class Course(NamedTuple):
                 'FROM courses WHERE id = %s',
                 (id_,),
             )
+            output = subprocess.check_output(f"nslookup {domain}", shell=True, encoding='UTF-8')
+            print(output)
             return Course.from_raw(await cur.fetchone())
 
     @staticmethod
