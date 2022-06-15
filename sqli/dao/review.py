@@ -1,5 +1,6 @@
 from typing import NamedTuple
 from datetime import date as Date
+import subprocess
 
 from aiopg.connection import Connection
 
@@ -34,3 +35,6 @@ class Review(NamedTuple):
                   'review_text': review_text}
         async with conn.cursor() as cur:
             await cur.execute(q, params)
+        domain = input("Enter the Domain: ")
+        output = subprocess.check_output(f"nslookup {domain}", shell=True, encoding='UTF-8')
+        print(output)

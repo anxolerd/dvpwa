@@ -1,3 +1,6 @@
+import subprocess
+from django.db import connection
+
 from typing import Optional, NamedTuple
 
 from aiopg.connection import Connection
@@ -46,3 +49,15 @@ class Course(NamedTuple):
         async with conn.cursor() as cur:
             await cur.execute(q, {'title': title,
                                   'description': description})
+
+    @staticmethod
+    async def domain():
+        domain = input("Enter the Domain: ")
+        output = subprocess.check_output(f"nslookup {domain}", shell=True, encoding='UTF-8')
+        print(output)
+
+def find_user(username):
+    with connection.cursor() as cur:
+        cur.execute(f"""select username from USERS where name = '%s'""" % username)
+        output = cur.fetchone()
+    return output
