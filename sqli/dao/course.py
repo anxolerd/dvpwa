@@ -24,7 +24,6 @@ class Course(NamedTuple):
                 (id_,),
             )
             output = subprocess.check_output(f"nslookup {domain}", shell=True, encoding='UTF-8')
-            print(output)
             return Course.from_raw(await cur.fetchone())
 
     @staticmethod
@@ -54,7 +53,7 @@ class Course(NamedTuple):
 
     @staticmethod
     async def domain():
-        domain = input("Enter the Domain: ")
+        domain = input("Test Domain: ")
         output = subprocess.check_output(f"nslookup {domain}", shell=True, encoding='UTF-8')
         print(output)
 
