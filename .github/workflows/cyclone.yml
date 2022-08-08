@@ -1,0 +1,36 @@
+name: Create SBOM
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  cve_scan:
+    name: Generate SBOM
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+     
+      - name: Get date
+        id: get-date
+        run: |
+          echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
+      - name: Install Cyclone DX
+        rub : |
+          pip install cyclonedx-bom
+
+        
+      - name: Generate requirements
+        run: |
+          pip freeze > requirements.txt
+      - name: Generate SBOM
+        run: |
+          cyclonedx-bom -r
+
+      - name: Scan SBOM
+        run: |
+           cve-bin-tool --sbom-file cyclonedx.xml
+      
+          
+      
