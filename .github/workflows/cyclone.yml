@@ -39,11 +39,12 @@ jobs:
       - name: Generate SBOM
         run: |
           cyclonedx-bom -r
+          dir
       - name: Generate Report
         uses: actions/upload-artifact@v2
         with:
           name: XML_Report
-          path: cvescan/reports/Result
+          path: cyclonedx.xml
 
 #       - name: Scan SBOM
 #         run: |
