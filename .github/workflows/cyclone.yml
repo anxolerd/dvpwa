@@ -42,7 +42,6 @@ jobs:
       - name: Generate Report
         uses: actions/checkout@v2
         with:
-          name: XML_Report
           path: cvescan/reports/Result
 
 #       - name: Scan SBOM
