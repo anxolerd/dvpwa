@@ -35,9 +35,11 @@ jobs:
       - name: Generate requirements
         run: |
           pip freeze > requirements.txt
+          dir
       - name: Generate SBOM
         run: |
           cyclonedx-bom -r
+          dir
 
 #       - name: Scan SBOM
 #         run: |
