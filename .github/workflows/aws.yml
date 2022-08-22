@@ -31,4 +31,4 @@ jobs:
         run: yarn
 
       - name: Deploy
-        run: aws s3 sync ./Artifacts s3://calab2
+        run: aws s3 sync ./suites/7926809735/artifacts/337867897 s3://calab2
