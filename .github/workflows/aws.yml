@@ -17,13 +17,6 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
-          source_dir: ./
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         with:
@@ -32,5 +25,11 @@ jobs:
         run: yarn
 #       - name: Build
 #         run: yarn build
-      - name: Deploy
-        run: aws s3 sync s3://calab2
+      - name: Upload S3    
+        uses: shallwefootball/s3-upload-action@master
+        id: S3
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+          aws_bucket: calab2
+          source_dir: /cyclonedx.xml
