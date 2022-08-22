@@ -32,4 +32,4 @@ jobs:
 #       - name: Build
 #         run: yarn build
       - name: Deploy
-        run: aws s3 sync cyclonedx.xml s3:calab2
+        run: aws s3 sync XML_Report s3://calab2
