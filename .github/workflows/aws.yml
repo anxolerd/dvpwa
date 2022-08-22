@@ -6,6 +6,29 @@ on:
       - master
 
 jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: |
+          npm i -D
+          npm test --if-present
+          npm run build:prod
+        env:
+          CI: true
+      - name: Upload Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: build
+          path: build
 #   deploy:
 #     runs-on: ubuntu-latest
 #     steps:
