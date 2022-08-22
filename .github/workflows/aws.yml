@@ -1,0 +1,35 @@
+name: Build & deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache modules
+        uses: actions/cache@v1
+        id: yarn-cache
+        with:
+          path: node_modules
+          key:${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id:${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key:${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Install dependencies
+        run: yarn
+      - name: Build
+        run: yarn build
+      - name: Deploy
+        run: aws s3 sync ./cyclonedx.xml s3:calab2
