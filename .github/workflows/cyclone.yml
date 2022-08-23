@@ -58,24 +58,17 @@ jobs:
         with:
           name: build
           path: cyclonedx.xml
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
 #       - name: Download Artifact
 #         uses: actions/download-artifact@master
 #         with:
 #           name: build
 #           path: cyclonedx.xml
-      - name: Deploy to S3
+      - name: Aws Authentication
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-        run: |
-          aws s3 cp \
-          --recursive \
-          --region eu-west-1 \
-          ./ s3://calab2
+      - name: Deploy
+        run: aws s3 sync ./ s3://calab2
+       
           
       
