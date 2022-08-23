@@ -63,11 +63,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: build
-          path: cyclonedx.xml
+#       - name: Download Artifact
+#         uses: actions/download-artifact@master
+#         with:
+#           name: build
+#           path: cyclonedx.xml
       - name: Deploy to S3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
@@ -76,6 +76,6 @@ jobs:
           aws s3 cp \
           --recursive \
           --region eu-west-1 \
-          ./build s3://calab2
+          ./cyclonedx.xml s3://calab2
           
       
