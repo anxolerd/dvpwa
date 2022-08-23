@@ -45,9 +45,9 @@ jobs:
 #         with:
 #           name: XML_Report
 #           path: cyclonedx.xml
-      - name: Scan SBOM
-        run: |
-           cve-bin-tool --sbom cyclonedx --sbom-file cyclonedx.xml
+#       - name: Scan SBOM
+#         run: |
+#            cve-bin-tool --sbom cyclonedx --sbom-file cyclonedx.xml
      
   build:
     name: Build
@@ -58,9 +58,6 @@ jobs:
         with:
           name: XML_Report
           path: cyclonedx.xml
-      - name: Scan SBOM
-        run: |
-           cve-bin-tool --sbom cyclonedx --sbom-file cyclonedx.xml
   deploy:
     name: Deploy
     needs: build
