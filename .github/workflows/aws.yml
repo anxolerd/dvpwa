@@ -49,12 +49,16 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: Generate Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: cyclonedx.xml
       - name: Download Artifact
         uses: actions/download-artifact@master
         with:
           name: build
-          path: build
+          path: cyclonedx.xml
       - name: Deploy to S3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
