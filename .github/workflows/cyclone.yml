@@ -76,6 +76,6 @@ jobs:
           aws s3 cp \
           --recursive \
           --region eu-west-1 \
-          ./cyclonedx.xml s3://calab2
+          ./ s3://calab2
           
       
