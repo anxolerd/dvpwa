@@ -63,10 +63,17 @@ jobs:
 #         with:
 #           name: build
 #           path: cyclonedx.xml
-      - name: Aws Authentication
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+  deploy:
+     runs-on: ubuntu-latest
+     steps:
+      - uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      
       - name: Deploy
         run: aws s3 sync ./ s3://calab2
        
