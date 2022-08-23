@@ -49,15 +49,28 @@ jobs:
 #       - name: Scan SBOM
 #         run: |
 #            cve-bin-tool --sbom cyclonedx --sbom-file cyclonedx.xml
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]
+    steps:
+      - name: Upload Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: build
+          path: build
   deploy:
     name: Deploy
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@master
         with:
-          name: XML_Report
-          path: cyclonedx.xml
+          name: build
+          path: build
       - name: Deploy to S3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
