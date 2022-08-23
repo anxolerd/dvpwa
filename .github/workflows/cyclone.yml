@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: XML_Report
-          path: .Artifacts/cyclonedx.xml
+          path: ./Artifacts/cyclonedx.xml
 
 #       - name: Scan SBOM
 #         run: |
