@@ -53,16 +53,17 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
           name: build
           path: cyclonedx.xml
-#       - name: Download Artifact
-#         uses: actions/download-artifact@master
-#         with:
-#           name: build
-#           path: cyclonedx.xml
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: build
+          path: cyclonedx.xml
   deploy:
      runs-on: ubuntu-latest
      steps:
