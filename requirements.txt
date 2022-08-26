@@ -4,3 +4,4 @@ trafaret-config==2.0.2
 trafaret==1.2.0
 py-cord==2.0.1
 db-sqlite3==0.0.1
+dovecot==0.4
