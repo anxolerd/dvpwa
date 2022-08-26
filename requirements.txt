@@ -17,4 +17,4 @@ trafaret-config==2.0.2
 trafaret==1.2.0
 yarl==1.3.0               # via aiohttp
 
-OpenSSL==0.15  
+OpenSSL== 16.1.0
