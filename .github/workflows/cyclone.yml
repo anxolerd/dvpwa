@@ -1,4 +1,4 @@
-name: Create  and scan SBOM 1
+name: Create  and scan SBOM 
 on:
   push:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   cve_scan:
-    name: Generate SBOM
+    name: Generate and scan SBOM
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
