@@ -40,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: cve_report
-          path: cve-bin-tool-report.html
+          path: report/cve-bin-tool-report.html
