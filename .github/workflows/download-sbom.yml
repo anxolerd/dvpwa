@@ -37,7 +37,7 @@ jobs:
           dir
       - name: Upload report as an artifact
 #        This will upload generated report as an GitHub artifact which you can download later.
-        uses: actions/download-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: cve_report
-          path: report/cve-bin-tool-report.html
+          path: ./report/cve-bin-tool-report.html
