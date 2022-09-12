@@ -37,7 +37,12 @@ jobs:
           dir
       - name: Scan SBOM
         run: |
-          cve-bin-tool -n json -i cyclonedx.xml
+          cve-bin-tool -n json -i cyclonedx.xml          
+      - name: Generate Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: HTML_Report
+          path: ./cyclone
      
 
        
