@@ -1,4 +1,4 @@
-name: Create  and scan SBOM 1
+name: Download SBOM
 on:
   push:
   pull_request:
