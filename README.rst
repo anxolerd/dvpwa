@@ -5,7 +5,7 @@ DVPWA -- Damn Vulnerable Python Web Application
 .. image:: https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg
    :alt: StandWithUkraine
    :align: center
-   :target: https://stand-with-ukraine.pp.ua
+   :target: https://stand-with-ukrained.pp.ua
 
 Description
 ===========
