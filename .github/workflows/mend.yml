@@ -33,9 +33,12 @@ jobs:
     
     - name: Mend CLI Scan
       env:
-        MEND_EMAIL: ${{secrets.EMAIL}}
-        MEND_USER_KEY: ${{secrets.USERKEY}}
-        MEND_URL: 'https://saas-eu.whitesourcesoftware.com'  
+        #SCA
+        MEND_URL: https://saas-eu.mend.io
+        #SAST
+        MEND_SAST_SERVER_URL: https://saas-eu.mend.io/sast
+        MEND_SAST_API_TOKEN: ${{secrets.MEND_SAST_API}}
+        MEND_SAST_ORGANIZATION: ${{secrets.MEND_SAST_ORGANIZATION}}
       run: |
         echo Downloading Mend CLI
         curl https://downloads.mend.io/production/unified/latest/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
