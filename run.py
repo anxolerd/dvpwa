@@ -14,5 +14,5 @@ if __name__ == '__main__':
 
     host = app['config']['app']['host']
     port = app['config']['app']['port']
-    log.info(f'App is listening at http://{host}:{port}')
+    log.info(f'App is listening at: http://{host}:{port}')
     run_app(app, host=host, port=port)
