@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 from itertools import groupby
 
-from aiohttp.web import Request, HTTPFound
+from aiohttp.web import Request, HTTPFound, Application
 from aiohttp.web_exceptions import HTTPNotFound, HTTPForbidden
 from aiohttp_jinja2 import template
 from aiohttp_session import get_session
@@ -33,9 +33,17 @@ async def index(request: Request):
     if request.method == 'POST':
         if auth_user:
             raise HTTPForbidden()
-        data = await request.post()
+        try:
+            data = EVALUATE_SCHEMA.check(await request.post())
+        except DataError as e:
+            errors.append(str(e))
+            return {'last_visited': last_visited,
+                    'errors': errors,
+                    'auth_user': auth_user}
+
         username = data['username']
         password = data['password']
+
         async with app['db'].acquire() as conn:
             user = await User.get_by_username(conn, username)
         if user and user.check_password(password):
