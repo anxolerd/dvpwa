@@ -1,0 +1,41 @@
+name: dfctl-scan
+on:
+  workflow_dispatch:
+    inputs:
+      dfctlversion:
+        description: 'dfctl version to use'
+        required: true
+        default: '3.4.0-2468'
+      alert-policy:
+        description: "Deepfactor alert policy"
+        required: false
+  pull_request:
+    branches: [1.0-GA]
+    types: [opened, reopened]
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: scan filesystem with dfctl
+        env: 
+          DFCTL_VERSION: ${{ github.event.inputs.dfctlversion || 'latest' }}
+          DF_RUN_TOKEN: ${{ secrets.DFSCAN_TOKEN }}
+          appName: ${{ github.event.repository.name }}
+          compName: ${{ github.base_ref }}
+          projDir: ${{ github.workspace }}
+          alertPolicy: ${{ github.event.inputs.alert-policy || 'AllCVEAlerts' }}
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            repoVersion=${{ github.head_ref }}
+          else
+            repoVersion=${{ github.ref_name }}
+          fi
+          docker run --pull=always --rm -e DF_RUN_TOKEN=$DF_RUN_TOKEN -v $projDir:/home/projdir -v /var/run/docker.sock:/var/run/docker.sock  public.ecr.aws/deepfactor/df/runtime:$DFCTL_VERSION dfctl scan -s fs -a $appName -c $compName -V $repoVersion -p $alertPolicy -R $compName  -X 1 /home/projdir
