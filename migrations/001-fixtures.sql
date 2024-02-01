@@ -7,10 +7,10 @@ INSERT INTO users (
   is_admin
 )
 VALUES
-  ('Super', NULL, 'Admin', 'superadmin', md5('superadmin'), TRUE),
-  ('John', 'William', 'Doe', 'j.doe', md5('password'), FALSE),
-  ('Stephen', NULL, 'King', 's.king', md5('password'), FALSE),
-  ('Peter', NULL, 'Parker', 'p.parker', md5('spidey'), FALSE);
+  ('Super', NULL, 'Admin', 'superadmin', crypt('superadmin', gen_salt('bf', 8)), TRUE),
+  ('John', 'William', 'Doe', 'j.doe', crypt('password', gen_salt('bf', 8)), FALSE),
+  ('Stephen', NULL, 'King', 's.king', crypt('password', gen_salt('bf', 8)), FALSE),
+  ('Peter', NULL, 'Parker', 'p.parker', crypt('spidey', gen_salt('bf', 8)), FALSE);
 
 INSERT INTO students (name) VALUES
   ('Chuck'), ('James'), ('Thor'), ('Clint'),

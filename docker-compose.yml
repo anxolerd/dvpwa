@@ -7,9 +7,15 @@ services:
       dockerfile: Dockerfile.db
     ports:
       - 5432:5432
+    read_only: true
+    tmpfs:
+      - /var/lib/postgresql/data
 
   redis:
     image: redis:alpine
+    read_only: true
+    tmpfs:
+      - /data
 
   sqli:
     build:
@@ -22,3 +28,6 @@ services:
       - 8080:8080
     command: |
       wait-for postgres:5432 -- python run.py
+    read_only: true
+    tmpfs:
+      - /tmp

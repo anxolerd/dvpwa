@@ -393,8 +393,13 @@ jQuery.Velocity ? console.log("Velocity is already loaded. You may be needlessly
     }var f,
         d = function () {
       if (r.documentMode) return r.documentMode;for (var e = 7; e > 4; e--) {
-        var t = r.createElement("div");if (t.innerHTML = "<!--[if IE " + e + "]><span></span><![endif]-->", t.getElementsByTagName("span").length) return t = null, e;
-      }return a;
+        var t = r.createElement("div");
+        var conditionalComment = "<!--[if IE " + e + "]><span></span><![endif]-->";
+        var span = r.createElement("span");
+        t.appendChild(span);
+        if (t.innerHTML.indexOf(conditionalComment) !== -1) {
+            return t = null, e;
+        }
     }(),
         g = function () {
       var e = 0;return t.webkitRequestAnimationFrame || t.mozRequestAnimationFrame || function (t) {
@@ -2847,8 +2852,7 @@ if (jQuery) {
 
         // Create Text span
         if (allowHtml) {
-          tooltipText = $('<span></span>').html(tooltipText);
-        } else {
+          tooltipText = $('<span></span>').text(tooltipText);
           tooltipText = $('<span></span>').text(tooltipText);
         }
 
@@ -3441,8 +3445,7 @@ if (jQuery) {
 
           // Insert as text;
         } else {
-          toast.innerHTML = this.message;
-        }
+          toast.textContent = this.message;
 
         // Append toasft
         Toast._container.appendChild(toast);
@@ -4563,8 +4566,7 @@ if (jQuery) {
     var range_wrapper = '.range-field';
     $(document).on('change', range_type, function (e) {
       var thumb = $(this).siblings('.thumb');
-      thumb.find('.value').html($(this).val());
-
+thumb.find('.value').text($(this).val());
       if (!thumb.hasClass('active')) {
         showRangeBubble(thumb);
       }
@@ -4583,8 +4585,7 @@ if (jQuery) {
       }
 
       // Set indicator value
-      thumb.find('.value').html($(this).val());
-
+      thumb.find('.value').text($(this).val());
       range_mousedown = true;
       $(this).addClass('active');
 
@@ -4615,8 +4616,7 @@ if (jQuery) {
 
         var offsetLeft = calcRangeOffset(input);
         thumb.addClass('active').css('left', offsetLeft);
-        thumb.find('.value').html(thumb.siblings(range_type).val());
-      }
+        thumb.find('.value').text(thumb.siblings(range_type).val());
     });
 
     $(document).on('mouseout touchleave', range_wrapper, function () {
@@ -5227,7 +5227,8 @@ if (jQuery) {
         $slides.find('img').each(function () {
           var placeholderBase64 = 'data:image/gif;base64,R0lGODlhAQABAIABAP///wAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
           if ($(this).attr('src') !== placeholderBase64) {
-            $(this).css('background-image', 'url("' + $(this).attr('src') + '")');
+              $(this).attr('src', $('<div>').text(placeholderBase64).html());
+          }
             $(this).attr('src', placeholderBase64);
           }
         });
@@ -5693,8 +5694,7 @@ if (jQuery) {
       var $renderedChip = $('<div class="chip"></div>');
       $renderedChip.text(elem.tag);
       if (elem.image) {
-        $renderedChip.prepend($('<img />').attr('src', elem.image));
-      }
+        $renderedChip.prepend($('<img />', { src: encodeURI(elem.image) }));
       $renderedChip.append($('<i class="material-icons close">close</i>'));
       return $renderedChip;
     };
@@ -6280,8 +6280,33 @@ if (jQuery) {
               if (typeof callback === 'function') {
                 callback.call(this, currentElement);
               } else if (typeof callback === 'string') {
-                var callbackFunc = new Function(callback);
-                callbackFunc(currentElement);
+                // Assuming callback is a string of the function body passed by the user
+                // The safe approach is to avoid using the Function constructor
+                // and instead use a predefined set of allowed functions.
+
+                // Example predefined callback functions
+                function predefinedCallback1() {
+                    // Some safe operations
+                }
+
+                function predefinedCallback2() {
+                    // Some other safe operations
+                }
+
+                // Map of allowed callbacks
+                var allowedCallbacks = {
+                    'callback1': predefinedCallback1,
+                    'callback2': predefinedCallback2
+                };
+
+                // Function to safely get the callback function by its name
+                function getSafeCallback(callbackName) {
+                    return allowedCallbacks[callbackName] || function() {};
+                }
+
+                // Usage
+                // Assuming the user provides the callback name as a string
+                var callbackFunc = getSafeCallback(callback);
               }
               value.done = true;
             }
@@ -6439,8 +6464,7 @@ if (jQuery) {
       render: function (entireComponent) {
 
         // Insert a new component holder in the root or box.
-        if (entireComponent) P.$root.html(createWrappedComponent());else P.$root.find('.' + CLASSES.box).html(P.component.nodes(STATE.open));
-
+        if (entireComponent) P.$root.empty().append(createWrappedComponent());else P.$root.find('.' + CLASSES.box).empty().append(P.component.nodes(STATE.open));
         // Trigger the queued “render” events.
         return P.trigger('render');
       }, //render
@@ -9105,10 +9129,8 @@ if (jQuery) {
 
     this[this.currentView] = value;
     if (isHours) {
-      this['spanHours'].html(value);
-    } else {
-      this['spanMinutes'].html(leadingZero(value));
-    }
+      this['spanHours'].text(value);
+      this['spanMinutes'].text(leadingZero(value));
 
     // If svg is not supported, just add an active class to the tick
     if (!svgSupported) {
@@ -9236,8 +9258,7 @@ if (jQuery) {
         actualLength = +$(this).val().length,
         isValidLength = actualLength <= maxLength;
 
-    $(this).parent().find('span[class="character-counter"]').html(actualLength + '/' + maxLength);
-
+    $(this).parent().find('span[class="character-counter"]').text(actualLength + '/' + maxLength);
     addInputStyle(isValidLength, $(this));
   }
 

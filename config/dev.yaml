@@ -1,6 +1,6 @@
 db:
   user: postgres
-  password: postgres
+  password: ${DB_PASSWORD}
   host: postgres
   port: 5432
   database: sqli

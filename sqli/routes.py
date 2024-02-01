@@ -1,5 +1,5 @@
-from os.path import dirname, join, realpath
-from aiohttp.web import Application
+from os.path import dirname, realpath
+from aiohttp.web import Application, StaticResource
 
 from sqli import views
 
@@ -30,4 +30,4 @@ def setup_routes(app: Application):
                          views.review)
 
     app.router.add_route('POST', r'/logout/', views.logout)
-    app.router.add_static('/static', join(DIR_PATH, 'static'))
+    app.router.register_resource(StaticResource(name='static', prefix='/static', directory=realpath(join(DIR_PATH, 'static'))))

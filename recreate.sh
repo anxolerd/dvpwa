@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
 
-docker-compose down
-docker volume ls -qf dangling=true | xargs -r docker volume rm
-docker-compose build
+docker-compose down --volumes
+docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1 --memory 512m
+
