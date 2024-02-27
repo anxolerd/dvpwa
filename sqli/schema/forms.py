@@ -1,6 +1,5 @@
 import trafaret as T
 
-
 EVALUATE_SCHEMA = T.Dict({
     T.Key('points'): T.Int(gte=0, lte=5),
 })
