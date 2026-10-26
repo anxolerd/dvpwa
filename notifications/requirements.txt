@@ -1,0 +1,5 @@
+bleach==2.1.2
+html5lib==1.1             # via bleach
+six==1.16.0               # via bleach, html5lib
+webencodings==0.5.1       # via html5lib
+priority==1.1.1
