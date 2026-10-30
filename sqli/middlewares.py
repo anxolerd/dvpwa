@@ -17,7 +17,7 @@ async def session_middleware(request, handler):
     # middleware factory. Do not forget to await on results here as original
     # session middleware factory is also awaitable.
     app = request.app
-    storage = RedisStorage(app['redis'], httponly=False)
+    storage = RedisStorage(app['redis'], httponly=True)
     middleware = session_middleware_(storage)
     return await middleware(request, handler)
 
