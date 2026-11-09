@@ -1,5 +1,5 @@
-import aioredis
 from aiohttp.web import Application
+from redis import asyncio as aioredis
 
 
 def setup_redis(app: Application):
@@ -9,11 +9,11 @@ def setup_redis(app: Application):
 
 async def _init_redis(app: Application):
     conf = app['config']['redis']
-    redis = await aioredis.create_pool((conf['host'], conf['port']),
-                                       db=conf['db'])
+    redis = aioredis.from_url(
+        f"redis://{conf['host']}:{conf['port']}/{conf['db']}",
+    )
     app['redis'] = redis
 
 
 async def _close_redis(app: Application):
     app['redis'].close()
-    await app['redis'].wait_closed()

@@ -2,14 +2,17 @@ version: '3.3'
 
 services:
   postgres:
-    build:
-      context: .
-      dockerfile: Dockerfile.db
+    image: docker.io/postgres:18-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sqli
+    volumes:
+      - ./migrations:/docker-entrypoint-initdb.d:ro
     ports:
       - 5432:5432
 
   redis:
-    image: redis:alpine
+    image: docker.io/valkey/valkey:9-alpine
 
   sqli:
     build:

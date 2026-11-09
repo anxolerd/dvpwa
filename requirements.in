@@ -1,0 +1,8 @@
+aiohttp-jinja2
+aiohttp-session
+aiohttp
+aiopg
+pyyaml
+redis>=4.2.0
+trafaret-config
+trafaret
